@@ -38,7 +38,7 @@ namespace MeetupWebApi.Controllers
                 Id = id
             });
 
-            return Ok(eventVm);
+            return eventVm != null ? Ok(eventVm) : NotFound();
         }
 
         [HttpPost("AddEvent")]
@@ -62,7 +62,7 @@ namespace MeetupWebApi.Controllers
                 Id = id
             });
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPut("UpdateEvent/{id}")]

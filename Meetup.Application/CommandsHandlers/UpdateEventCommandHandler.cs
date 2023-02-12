@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
 using Meetup.Application.Commands;
+using Meetup.Application.Exceptions;
 using Meetup.Data.Interfaces;
+using Meetup.Models;
 
 namespace Meetup.Application.CommandsHandlers
 {
@@ -22,6 +24,11 @@ namespace Meetup.Application.CommandsHandlers
         {
             var eventEntity = await _eventRepository.GetByIdAsync(request.Id);
             var organizers = await _organizerRepository.GetOrganizersByIdsAsync(request.Event.OrganizersIds);
+
+            if (eventEntity == null || eventEntity.Id != request.Id)
+            {
+                throw new NotFoundException(nameof(Event), request.Id);
+            }
 
             eventEntity.Organizers.Clear();
 
